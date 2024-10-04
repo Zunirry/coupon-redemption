@@ -1,10 +1,13 @@
+// coupon.entity.ts
+
+import { User } from "@/app/api/user/domain/entities/User";
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
-// import { Customer } from "./Customer.entity"
 
 @Entity({
   name: "coupon",
@@ -13,10 +16,6 @@ export class Coupon {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  //   @OneToOne(() => Customer)
-  //   @JoinColumn()
-  //   customer: Customer
-
   @Column()
   name: string;
 
@@ -24,7 +23,16 @@ export class Coupon {
   percentage: number;
 
   @Column()
-  kindOf: number;
+  kindOf: string;
+
+  @Column({ default: false })
+  used: boolean;
+
+  @Column()
+  userId: string;
+
+  @ManyToOne(() => User, (user) => user.coupons, { eager: true })
+  user: Promise<User>;
 
   @CreateDateColumn()
   createdAt: Date;

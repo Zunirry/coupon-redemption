@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { Coupon } from "../domain/entities";
+import { User } from "@/app/api/user/domain/entities/User";
+import { Coupon } from "@/app/api/coupon/domain/entities/Coupon";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -11,7 +12,7 @@ export const AppDataSource = new DataSource({
   database: "postgres",
   synchronize: true,
   logging: true,
-  entities: [Coupon],
+  entities: [User, Coupon],
   subscribers: [],
   migrations: [],
 });
@@ -20,9 +21,7 @@ export async function getDataSource() {
   if (!AppDataSource.isInitialized) {
     try {
       await AppDataSource.initialize();
-      console.log("Data Source has been initialized!");
     } catch (err) {
-      console.error("Error during Data Source initialization:", err);
       throw err;
     }
   }

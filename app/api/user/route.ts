@@ -3,7 +3,7 @@ import { initDependencies } from "@/app/server/typeorm/initDependencies";
 import { ResponseMessages } from "@/app/server/enums/ResponseMessages";
 
 export async function POST(req: NextRequest) {
-  const { couponService } = await initDependencies();
+  const { userService } = await initDependencies();
 
   const body = await req.json();
 
@@ -15,8 +15,8 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const coupon = await couponService.create(body);
-    return NextResponse.json(coupon, { status: 200 });
+    const user = await userService.create(body);
+    return NextResponse.json(user, { status: 200 });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return NextResponse.json({ message: error.message }, { status: 400 });

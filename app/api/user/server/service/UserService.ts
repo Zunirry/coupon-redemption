@@ -1,7 +1,7 @@
 import { ResponseCustom } from "@/app/types/response-custom";
 import { IUser } from "../domain/models/IUser";
 import { UserRepository } from "../repositories/UserRepository";
-import { ResponseMessages } from "@/app/server/enums/ResponseMessages";
+import { ResponseMessages } from "@/app/types/enums/ResponseMessages";
 import { User } from "../domain/entities/User";
 
 export class UserService {

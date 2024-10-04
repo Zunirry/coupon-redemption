@@ -10,11 +10,24 @@ export class CouponRepository {
   }
 
   async create(coupon: ICoupon): Promise<Coupon> {
-    console.log("coupon: ", coupon);
     const newCoupon = this._couponRepository.create(coupon);
-    console.log("newCoupon: ", newCoupon);
 
     return this._couponRepository.save(newCoupon);
+  }
+
+  async update(
+    coupon: Coupon,
+    updateData: Partial<ICoupon>
+  ): Promise<Coupon | null> {
+    Object.assign(coupon, updateData);
+
+    return this._couponRepository.save(coupon);
+  }
+
+  async findById(id: ICoupon["userId"]) {
+    return await this._couponRepository.findOne({
+      where: { id },
+    });
   }
 
   async count(type: ICoupon["kindOf"]) {

@@ -1,12 +1,13 @@
 // coupon.entity.ts
 
-import { User } from "@/app/api/user/domain/entities/User";
+import { User } from "@/app/api/user/server/domain/entities/User";
 import {
   Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
 
 @Entity({
@@ -37,6 +38,6 @@ export class Coupon {
   @CreateDateColumn()
   createdAt: Date;
 
-  @CreateDateColumn()
+  @UpdateDateColumn()
   updatedAt: Date;
 }

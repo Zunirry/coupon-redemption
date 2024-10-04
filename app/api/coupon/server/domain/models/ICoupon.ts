@@ -3,4 +3,5 @@ export interface ICoupon {
   percentage: number;
   kindOf: string;
   userId: string;
+  used?: boolean;
 }

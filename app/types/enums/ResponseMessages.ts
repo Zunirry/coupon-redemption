@@ -5,4 +5,7 @@ export enum ResponseMessages {
   MAX_COUPONS_REACHED_BY_USER = "Max coupons reached by user",
   MAX_COUPONS_REACHED = "Max kind of coupons reached",
   INTERNAL_SERVER_ERROR = "Internal Server Error",
+  COUPON_NOT_FOUND = "Coupon not found",
+  NOT_ID_RECEIVED = "Not id received",
+  COUPON_ALREADY_USED = "Coupon already used",
 }

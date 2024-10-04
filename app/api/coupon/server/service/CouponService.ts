@@ -1,7 +1,7 @@
-import { UserService } from "../../user/service/UserService";
+import { UserService } from "@/app/api/user/server/service/UserService";
 import { ICoupon } from "../domain/models/ICoupon";
 import { CouponRepository } from "../repositories/CouponRepository";
-import { ResponseMessages } from "@/app/server/enums/ResponseMessages";
+import { ResponseMessages } from "@/app/types/enums/ResponseMessages";
 
 export class CouponService {
   private _couponRepository: CouponRepository;
@@ -51,6 +51,43 @@ export class CouponService {
 
     const result = await this._couponRepository.create(coupon);
 
-    return { data: result, status: 2001 };
+    return { data: result, status: 201 };
+  }
+
+  async redeemCoupon(couponId: string) {
+    const coupon = await this._couponRepository.findById(couponId);
+
+    if (!coupon) {
+      return {
+        data: {
+          message: ResponseMessages.COUPON_NOT_FOUND,
+        },
+        status: 404,
+      };
+    }
+
+    if (coupon.used) {
+      return {
+        data: {
+          message: ResponseMessages.COUPON_ALREADY_USED,
+        },
+        status: 400,
+      };
+    }
+
+    const updatedCoupon = await this._couponRepository.update(coupon, {
+      used: true,
+    });
+
+    if (!updatedCoupon) {
+      return {
+        data: {
+          message: ResponseMessages.COUPON_NOT_FOUND,
+        },
+        status: 404,
+      };
+    }
+
+    return { data: updatedCoupon, status: 201 };
   }
 }

@@ -1,7 +1,7 @@
+import { Coupon } from "@/app/api/coupon/server/domain/entities/Coupon";
+import { User } from "@/app/api/user/server/domain/entities/User";
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { User } from "@/app/api/user/domain/entities/User";
-import { Coupon } from "@/app/api/coupon/domain/entities/Coupon";
 
 export const AppDataSource = new DataSource({
   type: "postgres",

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { initDependencies } from "@/app/server/typeorm/initDependencies";
-import { ResponseMessages } from "@/app/server/enums/ResponseMessages";
+import { initDependencies } from "@/app/lib/typeorm/initDependencies";
+import { ResponseMessages } from "@/app/types/enums/ResponseMessages";
 
 export async function POST(req: NextRequest) {
   const { couponService } = await initDependencies();

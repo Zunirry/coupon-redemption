@@ -24,6 +24,12 @@ export class CouponRepository {
     return this._couponRepository.save(coupon);
   }
 
+  async findByUserId(userId: ICoupon["userId"]): Promise<Coupon[]> {
+    return await this._couponRepository.find({
+      where: { userId },
+    });
+  }
+
   async findById(id: ICoupon["userId"]) {
     return await this._couponRepository.findOne({
       where: { id },

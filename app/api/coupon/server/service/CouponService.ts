@@ -54,6 +54,23 @@ export class CouponService {
     return { data: result, status: 201 };
   }
 
+  async getCouponsByUser(userId: string) {
+    const user = await this._userService.getById(userId);
+
+    if ("message" in user.data) {
+      return {
+        data: {
+          message: ResponseMessages.USER_NOT_FOUND,
+        },
+        status: 404,
+      };
+    }
+
+    const coupons = await this._couponRepository.findByUserId(userId);
+
+    return { data: coupons, status: 200 };
+  }
+
   async redeemCoupon(couponId: string) {
     const coupon = await this._couponRepository.findById(couponId);
 

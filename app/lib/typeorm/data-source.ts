@@ -5,11 +5,11 @@ import { DataSource } from "typeorm";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
-  host: "localhost",
+  host: "postgres.railway.internal",
   port: 5432,
-  username: "zunirry",
-  password: "test123",
-  database: "postgres",
+  username: "postgres",
+  password: "RnXLnoRZmvVKJxSXTPOCeElTIQdvxiiw",
+  database: "railway",
   synchronize: true,
   logging: true,
   entities: [User, Coupon],

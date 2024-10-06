@@ -6,19 +6,10 @@ import { useRouter } from "next/navigation";
 
 import { IUser } from "@/app/api/user/server/domain/models/IUser";
 import { useApi } from "@/hooks/useApi";
-import { useContext } from "react";
-import UserState from "./context/userContext";
 import { UserResponseApi } from "./types/user";
+import Swal from "sweetalert2";
 
 export default function Home() {
-  const userContext = useContext(UserState);
-
-  if (!userContext) {
-    throw new Error("MyComponent must be used within a GlobalStateProvider");
-  }
-
-  const { onStorageUser } = userContext;
-
   const router = useRouter();
 
   const {
@@ -39,8 +30,23 @@ export default function Home() {
   const onSubmit = async (data: IUser) => {
     const response = await createUser(data);
 
-    if (!error) router.push("/products");
-    if (response.data) onStorageUser(response.data);
+    if (response.data) {
+      localStorage.setItem("user", JSON.stringify(response.data));
+    }
+
+    if (!error) {
+      Swal.fire({
+        title: "User created",
+        text: "Your user was created successfully!",
+        icon: "success",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Ok!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push("/products");
+        }
+      });
+    }
   };
 
   return (

@@ -36,7 +36,9 @@ export class CouponRepository {
     });
   }
 
-  async count(type: ICoupon["kindOf"]) {
-    return await this._couponRepository.count({ where: { kindOf: type } });
+  async countNonUsed(type: ICoupon["kindOf"]) {
+    return await this._couponRepository.count({
+      where: { kindOf: type, used: false },
+    });
   }
 }

@@ -1,9 +1,9 @@
 export const getDiscount = (
   originalPrice: number,
   discountPercentage: number
-): number => {
+): string => {
   const discount = originalPrice * (discountPercentage / 100);
   const priceWithDiscount = originalPrice - discount;
 
-  return priceWithDiscount;
+  return Math.abs(priceWithDiscount).toFixed(2);
 };

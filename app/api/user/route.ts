@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const user = await userService.create(body);
-    return NextResponse.json(user, { status: 200 });
+    return NextResponse.json(user, { status: user.status });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     return NextResponse.json({ message: error.message }, { status: 400 });

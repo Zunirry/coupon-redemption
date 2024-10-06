@@ -5,6 +5,16 @@ export interface CouponResponseApi {
   status: number;
 }
 
+export interface CreateCouponResponseApi {
+  data: CouponInterface;
+  status: number;
+}
+
+export interface RedeemCouponResponseApi {
+  data: CouponInterface;
+  status: number;
+}
+
 export interface CouponInterface {
   id: string;
   name: DatumName;

@@ -3,25 +3,26 @@
 "use client";
 
 import { products } from "@/app/lib/products";
-import { CouponResponseApi } from "@/app/types/coupon";
+import {
+  CouponResponseApi,
+  CreateCouponResponseApi,
+  RedeemCouponResponseApi,
+} from "@/app/types/coupon";
 import { Product } from "@/components/product";
 import { useApi } from "@/hooks/useApi";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getDiscount } from "@/app/lib/getDiscount";
 import { twMerge } from "tailwind-merge";
-import UserState from "@/app/context/userContext";
+import { UserInterface } from "@/app/types/user";
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 const CartItem = ({ params }: { params: { id: string } }) => {
   const { id } = params;
 
-  const userContext = useContext(UserState);
+  const router = useRouter();
 
-  if (!userContext) {
-    throw new Error("MyComponent must be used within a GlobalStateProvider");
-  }
-
-  const { user } = userContext;
-
+  const [user, setUser] = useState<UserInterface>();
   const [couponId, setCouponId] = useState<string | null>(null);
   const [couponPercentage, setCouponPercentage] = useState<string | undefined>(
     undefined
@@ -39,18 +40,66 @@ const CartItem = ({ params }: { params: { id: string } }) => {
     url: `coupon/user/${user?.id}`,
   });
 
-  const { execute: redeemCoupon, isLoading: redeemLoading } = useApi({
+  const {
+    execute: redeemCoupon,
+    isLoading: redeemLoading,
+    error: redeemError,
+  } = useApi<RedeemCouponResponseApi>({
     method: "PATCH",
     url: `coupon/${couponId}`,
   });
 
+  const {
+    execute: createCoupon,
+    isLoading: createLoading,
+    error: createError,
+  } = useApi<CreateCouponResponseApi>({
+    method: "POST",
+    url: `coupon/user/${user?.id}`,
+  });
+
   const handlePayment = async () => {
-    await redeemCoupon();
+    if (couponDiscount && couponPercentage) await redeemCoupon();
+
+    const response = await createCoupon();
+
+    if (!redeemError || !createError) {
+      Swal.fire({
+        title: "You have purchased the product",
+        text: "You have purchased the product successfully!",
+        icon: "success",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Ok!",
+      }).then((result) => {
+        if (result) {
+          Swal.fire({
+            title: `You got a ${response.data.kindOf} off coupon`,
+            text: "You have purchased the product successfully!",
+            icon: "success",
+            confirmButtonColor: "#3085d6",
+            confirmButtonText: "Ok!",
+          }).then((res) => {
+            if (res.isConfirmed) {
+              router.push("/products");
+            }
+          });
+        }
+      });
+    }
   };
 
   useEffect(() => {
-    getCoupons();
+    const userJson = localStorage.getItem("user");
+    if (userJson) {
+      setUser(JSON.parse(userJson));
+    }
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      getCoupons();
+    }
+  }, [user]);
 
   useEffect(() => {
     if (couponId) {
@@ -96,10 +145,13 @@ const CartItem = ({ params }: { params: { id: string } }) => {
                   coupons.data
                     .filter((coupon) => !coupon?.used)
                     .map((coupon: any, index: number) => (
-                      <option key={index} value={coupon.id}>
+                      <option key={index + 1} value={coupon.id}>
                         {coupon.name}
                       </option>
                     ))}
+                <option key={0} value={0}>
+                  No coupon
+                </option>
               </select>
             </div>
           </div>
@@ -125,7 +177,7 @@ const CartItem = ({ params }: { params: { id: string } }) => {
             )}
             <button
               className={twMerge(
-                couponsLoading || redeemLoading
+                couponsLoading || redeemLoading || createLoading
                   ? "bg-green-400 cursor-not-allowed"
                   : "bg-green-500 cursor-pointer",
                 " font-bold py-2 rounded-lg w-full"

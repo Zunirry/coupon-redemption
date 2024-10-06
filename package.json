@@ -16,6 +16,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.51.5",
     "reflect-metadata": "^0.2.2",
+    "sweetalert2": "^11.14.1",
     "tailwind-merge": "^2.5.3",
     "typeorm": "^0.3.20",
     "zod": "^3.23.8"

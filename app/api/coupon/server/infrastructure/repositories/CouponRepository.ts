@@ -1,6 +1,6 @@
 import { Repository } from "typeorm";
-import { ICoupon } from "../domain/models/ICoupon";
-import { Coupon } from "../domain/entities/Coupon";
+import { Coupon } from "../../domain/entities/Coupon";
+import { ICoupon } from "../../domain/models/ICoupon";
 
 export class CouponRepository {
   private _couponRepository: Repository<Coupon>;

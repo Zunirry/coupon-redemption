@@ -40,17 +40,15 @@ const CartItem = ({ params }: { params: { id: string } }) => {
     url: `coupon/user/${user?.id}`,
   });
 
-  const {
-    execute: redeemCoupon,
-    isLoading: redeemLoading,
-    error: redeemError,
-  } = useApi<RedeemCouponResponseApi>({
-    method: "PATCH",
-    url: `coupon/${couponId}`,
-  });
+  const { execute: redeemCoupon, isLoading: redeemLoading } =
+    useApi<RedeemCouponResponseApi>({
+      method: "PATCH",
+      url: `coupon/${couponId}`,
+    });
 
   const {
     execute: createCoupon,
+    data: createData,
     isLoading: createLoading,
     error: createError,
   } = useApi<CreateCouponResponseApi>({
@@ -61,32 +59,43 @@ const CartItem = ({ params }: { params: { id: string } }) => {
   const handlePayment = async () => {
     if (couponDiscount && couponPercentage) await redeemCoupon();
 
-    const response = await createCoupon();
-
-    if (!redeemError || !createError) {
+    try {
+      const response = await createCoupon();
       Swal.fire({
         title: "You have purchased the product",
         text: "You have purchased the product successfully!",
         icon: "success",
         confirmButtonColor: "#3085d6",
         confirmButtonText: "Ok!",
-      }).then((result) => {
-        if (result) {
-          Swal.fire({
-            title: `You got a ${response.data.kindOf} off coupon`,
-            text: "You have purchased the product successfully!",
-            icon: "success",
-            confirmButtonColor: "#3085d6",
-            confirmButtonText: "Ok!",
-          }).then((res) => {
-            if (res.isConfirmed) {
-              router.push("/products");
-            }
-          });
-        }
+      }).then(() => {
+        Swal.fire({
+          title: `You got a ${response?.data?.kindOf} off coupon`,
+          text: "You have purchased the product successfully!",
+          icon: "success",
+          confirmButtonColor: "#3085d6",
+          confirmButtonText: "Ok!",
+        }).then((res) => {
+          if (res.isConfirmed) {
+            router.push("/products");
+          }
+        });
       });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err: any) {
+      Swal.fire({
+        title: "You have purchased the product",
+        text: "You have purchased the product successfully!",
+        icon: "success",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "Ok!",
+      }).then(() => router.push("/products"));
     }
   };
+
+  useEffect(() => {
+    if (!createError) {
+    }
+  }, [createError, createData]);
 
   useEffect(() => {
     const userJson = localStorage.getItem("user");

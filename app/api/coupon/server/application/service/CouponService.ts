@@ -1,8 +1,8 @@
 import { UserService } from "@/app/api/user/server/application/service/UserService";
+import { ICoupon } from "../../domain/models/ICoupon";
 import { ResponseMessages } from "@/app/types/enums/ResponseMessages";
 import { generateRandomNumber } from "@/app/lib/random";
-import { ICoupon } from "../domain/models/ICoupon";
-import { CouponRepository } from "../infrastructure/repositories/CouponRepository";
+import { CouponRepository } from "../../infrastructure/repositories/CouponRepository";
 
 export class CouponService {
   private _couponRepository: CouponRepository;

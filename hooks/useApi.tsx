@@ -46,6 +46,7 @@ interface ApiHookParams {
 export const useApi = <T,>({ method, url }: ApiHookParams) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+
   const [data, setData] = useState<T | null>(null);
 
   const execute = useCallback(
@@ -58,7 +59,8 @@ export const useApi = <T,>({ method, url }: ApiHookParams) => {
         return result;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
-        setError(error.message);
+        const err = error.response.data.data.message;
+        setError(err);
         throw error;
       } finally {
         setIsLoading(false);

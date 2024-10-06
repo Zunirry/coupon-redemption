@@ -1,8 +1,8 @@
 import { ResponseCustom } from "@/app/types/response-custom";
+import { IUser } from "../../domain/models/IUser";
+import { UserRepository } from "../repositories/UserRepository";
 import { ResponseMessages } from "@/app/types/enums/ResponseMessages";
-import { UserRepository } from "../infrastructure/repositories/UserRepository";
-import { IUser } from "../domain/models/IUser";
-import { User } from "../domain/entities/User";
+import { User } from "../../domain/entities/User";
 
 export class UserService {
   private _userRepository: UserRepository;

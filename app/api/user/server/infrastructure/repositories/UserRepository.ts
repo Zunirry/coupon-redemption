@@ -1,6 +1,6 @@
 import { Repository } from "typeorm";
-import { User } from "../domain/entities/User";
-import { IUser } from "../domain/models/IUser";
+import { User } from "../../domain/entities/User";
+import { IUser } from "../../domain/models/IUser";
 
 export class UserRepository {
   private _userRepository: Repository<User>;

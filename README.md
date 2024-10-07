@@ -8,7 +8,8 @@ you will modify:
 ```bash
 username,
 password,
-database
+database,
+host
 ```
 
 After that, run the development server:
@@ -20,5 +21,34 @@ yarn dev
 # or
 pnpm dev
 ```
+
+Endpoints services:
+
+- **Description**: Redeems a coupon by code
+- **URL**: `/coupon/:idCoupon`
+- **Method**: `PATCH`
+- **URL Params**:
+
+  - `idCoupon` - The ID of the coupon to be redeemed.
+
+- **Description**: Assigns a gift card (coupon) to a user after a purchase.
+- **URL**: `/api/coupon/user/:idUser`
+- **Method**: `POST`
+- **URL Params**:
+
+  - `idUser` - The ID of the user.
+
+- **Description**: Create a new user.
+- **URL**: `/api/user`
+- **Method**: `POST`
+- **URL Params**:
+
+  - `idCoupon` - The ID of the coupon to be redeemed.
+
+- **Description**: Get all coupons by user.
+- **URL**: `/api/coupon/user/:idUser`
+- **Method**: `GET`
+- **URL Params**:
+  - `idUser` - The ID of the user.
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.

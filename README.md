@@ -41,9 +41,6 @@ Endpoints services:
 - **Description**: Create a new user.
 - **URL**: `/api/user`
 - **Method**: `POST`
-- **URL Params**:
-
-  - `idCoupon` - The ID of the coupon to be redeemed.
 
 - **Description**: Get all coupons by user.
 - **URL**: `/api/coupon/user/:idUser`
